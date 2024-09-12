@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom CSS</title>
+    <style>
+      .paragraph {
+          color: {{ text_color }};
+          background-color: {{ background_color }};
+          {% if css_params %}
+              margin: {{ css_params.margin }};
+              padding: {{ css_params.padding }};
+              width: {{ css_params.block_size }};
+          {% endif %}
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Enter CSS Parameters</h1>
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- Show the styled paragraph only if the form is submitted -->
+    <div>
+      <h2>Styled Paragraph:</h2>
+      <div class="paragraph">{{ paragraph_text }}</div>
+    </div>
+
+    <a href="{% url 'index' %}">Back to menu</a>
+  </body>
+</html>
