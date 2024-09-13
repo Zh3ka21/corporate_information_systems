@@ -1,15 +1,70 @@
-<!-- myapp/templates/myapp/index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu</title>
+    <style>
+      /* General body styling */
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: #fafafa;
+        color: #333;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Header styling */
+      h1 {
+        color: #ff69b4; /* Cute pink color */
+        margin: 20px 0;
+        font-size: 2.5em;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      /* List styling */
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        padding: 20px 0; /* Adjusted padding for spacing between list items */
+      }
+
+      /* Link styling */
+      a {
+        text-decoration: none;
+        color: #ff6347; /* Tomato color for links */
+        font-size: 1.2em;
+        font-weight: bold;
+        border: 2px solid #ff6347;
+        border-radius: 8px;
+        padding: 10px 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, color 0.3s, transform 0.3s;
+      }
+
+      a:hover {
+        background-color: #ff6347; /* Tomato color */
+        color: #fff;
+        transform: scale(1.05);
+      }
+
+      a:active {
+        background-color: #e55347; /* Slightly darker tomato */
+      }
+    </style>
   </head>
   <body>
     <h1>Menu</h1>
     <ul>
       <li><a href="{% url 'task2' %}">Custom CSS Page</a></li>
+      <li><a href="{% url 'task3' %}">Custom Image Layouts</a></li>
     </ul>
   </body>
 </html>
