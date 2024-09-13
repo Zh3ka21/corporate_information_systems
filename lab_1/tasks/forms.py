@@ -6,3 +6,5 @@ class CssForm(forms.Form):
     text_color = forms.CharField(label='Text color', max_length=20)
     background_color = forms.CharField(label='Background color', max_length=20)
 
+class TableForm(forms.Form):
+    rows = forms.IntegerField(label='Number of Rows', min_value=1, initial=1)

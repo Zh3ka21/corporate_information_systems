@@ -1,14 +1,14 @@
-
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .forms import CssForm
-from .models import CssParameters, Image
+from .forms import CssForm, TableForm
+from .models import CssParameters, Image, Columns
+from django.db.models import OuterRef, Subquery
+
 
 def index(request):
     return render(request, 'tasks/index.html')
-
 
 def task2(request):
     paragraph_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'  
@@ -109,3 +109,32 @@ def task4(request):
 
     urls = Image.objects.all()
     return render(request, 'tasks/task4.html', {'urls': urls[0:3]})
+
+def task5(request):
+    table = []
+    if request.method == 'POST':
+        form = TableForm(request.POST)
+        if form.is_valid():
+            rows = form.cleaned_data['rows']
+            
+            columns_dict = Columns.objects.first()
+            columns = columns_dict.columns
+            
+            current_images = Columns.objects.all()
+            if current_images.count() > 2:
+                # Find the ID of the image to keep (most recent one)
+                keep_ids = current_images.order_by('-id').values_list('id', flat=True)[:1]
+
+                # Subquery to find the images to keep
+                subquery = current_images.filter(id__in=keep_ids).values_list('id', flat=True)
+                
+                # Delete images that are not in the subquery result
+                to_delete = current_images.exclude(id__in=Subquery(subquery))
+                to_delete.delete()
+                        
+            table = [[(r * columns + c + 1) for c in range(columns)] for r in range(rows)]
+
+    else:
+        form = TableForm()
+
+    return render(request, 'tasks/task5.html', {'form': form, 'table': table})

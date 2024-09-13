@@ -13,4 +13,6 @@ urlpatterns = [
     path('task4/', views.task4, name='task4'),
     path('task4/success/', views.task4_success, name='task4_success'),
     path('task4/error/', views.task4_error, name='task4_error'),
+    
+    path('task5', views.task5, name='task5'),
 ]

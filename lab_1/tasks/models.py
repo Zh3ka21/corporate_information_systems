@@ -14,3 +14,9 @@ class Image(models.Model):
 
     def __str__(self):
         return f"URL: {self.url}, Height: {self.height}"
+
+class Columns(models.Model):
+    columns = models.IntegerField()
+    
+    def __str__(self) -> str:
+        return f"Columns: {self.columns}"

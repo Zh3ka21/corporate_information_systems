@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generate Table</title>
+  </head>
+  <body>
+    <h1>Generate a Chessboard-like Table</h1>
+
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Generate Table</button>
+    </form>
+
+    {% if table %}
+    <h2>Generated Table</h2>
+    <table border="1">
+      {% for row in table %}
+      <tr>
+        {% for cell in row %}
+        <td>{{ cell }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </body>
+</html>
