@@ -78,10 +78,6 @@
     </style>
   </head>
   <body>
-    <div class="back-link">
-      <a href="{% url 'index' %}">Back to menu</a>
-    </div>
-
     <div class="container">
       {% for size in sizes %}
       <div class="rectangle rect{{ forloop.counter }}">
@@ -99,7 +95,9 @@
       <input type="hidden" name="images[]" value="" />
       <button type="submit">Save Images</button>
     </form>
-
+    <div class="back-link">
+      <a href="{% url 'index' %}">Back to menu</a>
+    </div>
     <script>
       document
         .getElementById("image-form")

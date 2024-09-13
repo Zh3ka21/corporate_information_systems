@@ -4,10 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Success</title>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
   </head>
   <body>
     <h1>Images Saved Successfully</h1>
     <p>Your images have been saved successfully!</p>
-    <a href="{% url 'task3' %}">Go back to the form</a>
+    <button onclick="goBack()">Go back to the previous page</button>
   </body>
 </html>

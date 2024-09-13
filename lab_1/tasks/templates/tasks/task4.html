@@ -18,26 +18,33 @@
       }
       .container {
         display: flex;
+        justify-content: center; /* Center items horizontally */
         align-items: flex-end; /* Align images to the bottom of the container */
-        margin-bottom: 20px; /* Space between images and the button */
+        gap: 20px; /* Space between the rectangles */
       }
       .rectangle {
-        width: 120px; /* Width of each image */
-        margin: 0 10px; /* Horizontal margin between images */
         overflow: hidden; /* Hide overflow for a clean look */
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      .rect1 {
+        width: 15vw; /* 15% of viewport width */
+        height: 30vh; /* 30% of viewport height */
+      }
+      .rect2 {
+        width: 30vw; /* 30% of viewport width */
+        height: 20vh; /* 20% of viewport height */
+      }
+      .rect3 {
+        width: 40vw; /* 40% of viewport width */
+        height: 4vh; /* 4% of viewport height */
       }
       .rectangle img {
         width: 100%; /* Make image fill the container width */
-        height: auto; /* Maintain aspect ratio */
+        height: 100%; /* Make image fill the container height */
+        object-fit: cover; /* Ensure the image covers the container */
       }
-      {% for size in sizes %}
-      .rect{{ forloop.counter }} img {
-          height: {{ size.height }}px; /* Apply unique height for each rectangle */
-      }
-      {% endfor %}
-
       .back-link {
         margin-bottom: 20px; /* Space between link and images */
         font-size: 18px;
@@ -79,42 +86,26 @@
   </head>
   <body>
     <div class="container">
+      {% for url in urls %}
+      <div class="rectangle rect{{ forloop.counter }}">
+        <img src="{{ url.url }}" alt="Random Image {{ forloop.counter }}" />
+      </div>
+      {% endfor %}
+    </div>
+
+    {% comment %}
+    <div class="container">
       <div class="rectangle rect1">
-        <img
-          src="https://loremflickr.com/120/60?random=1"
-          alt="Random Image 1"
-          data-height="60"
-        />
+        <img src="{{ image1_url }}" alt="Random Image 1" />
       </div>
       <div class="rectangle rect2">
-        <img
-          src="https://loremflickr.com/120/60?random=2"
-          alt="Random Image 2"
-          data-height="60"
-        />
+        <img src="{{ image2_url }}" alt="Random Image 2" />
       </div>
       <div class="rectangle rect3">
-        <img
-          src="https://loremflickr.com/120/120?random=3"
-          alt="Random Image 3"
-          data-height="120"
-        />
-      </div>
-      <div class="rectangle rect4">
-        <img
-          src="https://loremflickr.com/120/140?random=4"
-          alt="Random Image 4"
-          data-height="140"
-        />
-      </div>
-      <div class="rectangle rect5">
-        <img
-          src="https://loremflickr.com/120/170?random=5"
-          alt="Random Image 5"
-          data-height="170"
-        />
+        <img src="{{ image3_url }}" alt="Random Image 3" />
       </div>
     </div>
+    {% endcomment %}
 
     <form id="image-form" method="POST" action="{% url 'task3' %}">
       {% csrf_token %}
@@ -122,7 +113,9 @@
       <button type="submit">Save Images</button>
     </form>
 
-    <a href="{% url 'index' %}">Back to menu</a>
+    <div class="back-link">
+      <a href="{% url 'index' %}">Back to menu</a>
+    </div>
 
     <script>
       document
@@ -131,7 +124,7 @@
           const images = Array.from(
             document.querySelectorAll(".rectangle img")
           ).map((img) => {
-            return `${img.src},${img.dataset.height}`;
+            return `${img.src},${img.dataset.height || ""}`;
           });
           const hiddenInput = document.querySelector('input[name="images[]"]');
           hiddenInput.value = images.join("|");
