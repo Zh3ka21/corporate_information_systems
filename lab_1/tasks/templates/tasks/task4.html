@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Pictures</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center items horizontally */
+        justify-content: center; /* Center items vertically */
+        height: 100vh;
+        background-color: #f0f0f0;
+        background-image: linear-gradient(to right, #e0e0e0, #ffffff);
+      }
+      .container {
+        display: flex;
+        align-items: flex-end; /* Align images to the bottom of the container */
+        margin-bottom: 20px; /* Space between images and the button */
+      }
+      .rectangle {
+        width: 120px; /* Width of each image */
+        margin: 0 10px; /* Horizontal margin between images */
+        overflow: hidden; /* Hide overflow for a clean look */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .rectangle img {
+        width: 100%; /* Make image fill the container width */
+        height: auto; /* Maintain aspect ratio */
+      }
+      {% for size in sizes %}
+      .rect{{ forloop.counter }} img {
+          height: {{ size.height }}px; /* Apply unique height for each rectangle */
+      }
+      {% endfor %}
+
+      .back-link {
+        margin-bottom: 20px; /* Space between link and images */
+        font-size: 18px;
+      }
+      .back-link a {
+        text-decoration: none;
+        color: #007bff; /* Blue color for the link */
+        font-weight: bold;
+      }
+      .back-link a:hover {
+        text-decoration: underline;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center the form content horizontally */
+        width: 100%; /* Make form full width */
+      }
+      button {
+        background-color: #4caf50; /* Green background */
+        color: white; /* White text */
+        border: none;
+        padding: 15px 32px; /* Add padding */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      button:hover {
+        background-color: #45a049; /* Darker green on hover */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="rectangle rect1">
+        <img
+          src="https://loremflickr.com/120/60?random=1"
+          alt="Random Image 1"
+          data-height="60"
+        />
+      </div>
+      <div class="rectangle rect2">
+        <img
+          src="https://loremflickr.com/120/60?random=2"
+          alt="Random Image 2"
+          data-height="60"
+        />
+      </div>
+      <div class="rectangle rect3">
+        <img
+          src="https://loremflickr.com/120/120?random=3"
+          alt="Random Image 3"
+          data-height="120"
+        />
+      </div>
+      <div class="rectangle rect4">
+        <img
+          src="https://loremflickr.com/120/140?random=4"
+          alt="Random Image 4"
+          data-height="140"
+        />
+      </div>
+      <div class="rectangle rect5">
+        <img
+          src="https://loremflickr.com/120/170?random=5"
+          alt="Random Image 5"
+          data-height="170"
+        />
+      </div>
+    </div>
+
+    <form id="image-form" method="POST" action="{% url 'task3' %}">
+      {% csrf_token %}
+      <input type="hidden" name="images[]" value="" />
+      <button type="submit">Save Images</button>
+    </form>
+
+    <a href="{% url 'index' %}">Back to menu</a>
+
+    <script>
+      document
+        .getElementById("image-form")
+        .addEventListener("submit", function (event) {
+          const images = Array.from(
+            document.querySelectorAll(".rectangle img")
+          ).map((img) => {
+            return `${img.src},${img.dataset.height}`;
+          });
+          const hiddenInput = document.querySelector('input[name="images[]"]');
+          hiddenInput.value = images.join("|");
+        });
+    </script>
+  </body>
+</html>

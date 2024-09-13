@@ -6,123 +6,92 @@
     <title>Random Pictures</title>
     <style>
       body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Center items horizontally */
-        justify-content: center; /* Center items vertically */
-        height: 100vh;
-        background-color: #f0f0f0;
-        background-image: linear-gradient(to right, #e0e0e0, #ffffff);
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          background-color: #f0f0f0;
+          background-image: linear-gradient(to right, #e0e0e0, #ffffff);
       }
       .container {
-        display: flex;
-        align-items: flex-end; /* Align images to the bottom of the container */
-        margin-bottom: 20px; /* Space between images and the button */
+          display: flex;
+          align-items: flex-end;
+          margin-bottom: 20px;
       }
       .rectangle {
-        width: 120px; /* Width of each image */
-        margin: 0 10px; /* Horizontal margin between images */
-        overflow: hidden; /* Hide overflow for a clean look */
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          width: 120px;
+          margin: 0 10px;
+          overflow: hidden;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
       .rectangle img {
-        width: 100%; /* Make image fill the container width */
-        height: auto; /* Maintain aspect ratio */
+          width: 100%;
+          height: auto;
       }
-      .rect1 img {
-        height: 60px; /* Height of the image */
+      {% for size in sizes %}
+      .rect{{ forloop.counter }} img {
+          height: {{ size.height }}px;
       }
-      .rect2 img {
-        height: 60px; /* Height of the image */
-      }
-      .rect3 img {
-        height: 120px; /* Height of the image */
-      }
-      .rect4 img {
-        height: 140px; /* Height of the image */
-      }
-      .rect5 img {
-        height: 170px; /* Height of the image */
-      }
+      {% endfor %}
+
       .back-link {
-        margin-bottom: 20px; /* Space between link and images */
-        font-size: 18px;
+          margin-bottom: 20px;
+          font-size: 18px;
       }
       .back-link a {
-        text-decoration: none;
-        color: #007bff; /* Blue color for the link */
-        font-weight: bold;
+          text-decoration: none;
+          color: #007bff;
+          font-weight: bold;
       }
       .back-link a:hover {
-        text-decoration: underline;
+          text-decoration: underline;
       }
       form {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Center the form content horizontally */
-        width: 100%; /* Make form full width */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
       }
       button {
-        background-color: #4caf50; /* Green background */
-        color: white; /* White text */
-        border: none;
-        padding: 15px 32px; /* Add padding */
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 4px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
       }
       button:hover {
-        background-color: #45a049; /* Darker green on hover */
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+          background-color: #45a049;
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
       }
     </style>
   </head>
   <body>
+    <div class="back-link">
+      <a href="{% url 'index' %}">Back to menu</a>
+    </div>
+
     <div class="container">
-      <div class="rectangle rect1">
+      {% for size in sizes %}
+      <div class="rectangle rect{{ forloop.counter }}">
         <img
-          src="https://loremflickr.com/120/60?random=1"
-          alt="Random Image 1"
-          data-height="60"
+          src="https://loremflickr.com/120/{{ size.height }}?random={{ forloop.counter }}"
+          alt="Random Image {{ forloop.counter }}"
+          data-height="{{ size.height }}"
         />
       </div>
-      <div class="rectangle rect2">
-        <img
-          src="https://loremflickr.com/120/60?random=2"
-          alt="Random Image 2"
-          data-height="60"
-        />
-      </div>
-      <div class="rectangle rect3">
-        <img
-          src="https://loremflickr.com/120/120?random=3"
-          alt="Random Image 3"
-          data-height="120"
-        />
-      </div>
-      <div class="rectangle rect4">
-        <img
-          src="https://loremflickr.com/120/140?random=4"
-          alt="Random Image 4"
-          data-height="140"
-        />
-      </div>
-      <div class="rectangle rect5">
-        <img
-          src="https://loremflickr.com/120/170?random=5"
-          alt="Random Image 5"
-          data-height="170"
-        />
-      </div>
+      {% endfor %}
     </div>
 
     <form id="image-form" method="POST" action="{% url 'task3' %}">
@@ -131,8 +100,6 @@
       <button type="submit">Save Images</button>
     </form>
 
-    <a href="{% url 'index' %}">Back to menu</a>
-
     <script>
       document
         .getElementById("image-form")
@@ -140,7 +107,9 @@
           const images = Array.from(
             document.querySelectorAll(".rectangle img")
           ).map((img) => {
-            return `${img.src},${img.dataset.height}`;
+            const height = img.dataset.height || "undefined";
+            console.log(height);
+            return `${img.src},${height}`;
           });
           const hiddenInput = document.querySelector('input[name="images[]"]');
           hiddenInput.value = images.join("|");

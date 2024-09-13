@@ -1,4 +1,5 @@
 
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -39,17 +40,44 @@ def task3_success(request):
 def task3_error(request):
     return render(request, 'tasks/task3_error.html')
 
+
 def task3(request):
     if request.method == 'POST':
         image_data = request.POST.get('images[]')
         if image_data:
-            # Split the data by '|' to get each URL-height pair
             image_pairs = image_data.split('|')
-            # Clear existing entries if needed
-            Image.objects.all().delete()
+            
+            # Ensure at least 5 images
+            current_images = Image.objects.all()
+            if current_images.count() > 5:
+                keep_ids = current_images.order_by('-id')[:5].values_list('id', flat=True)
+                to_delete = current_images.exclude(id__in=keep_ids)
+                to_delete.delete()
+
             for pair in image_pairs:
-                url, height = pair.split(',')
-                Image.objects.create(url=url, height=int(height))
-            return redirect(reverse('task3_success'))  # Redirect to a success page
-        return redirect(reverse('task3_error'))  # Redirect to an error page if no data
-    return render(request, 'tasks/task3.html')
+                url, height_str = pair.split(',')
+                try:
+                    height = int(height_str)
+                    image, created = Image.objects.update_or_create(
+                        url=url,
+                        defaults={'height': height}
+                    )
+                except ValueError:
+                    height = 0
+                except IntegrityError:
+                    raise IntegrityError("Such image exist.")
+            
+            return redirect(reverse('task3_success'))
+        return redirect(reverse('task3_error'))
+
+    sizes = Image.objects.all()
+    return render(request, 'tasks/task3.html', {'sizes': sizes})
+
+def task4_success(request):
+    return render(request, 'tasks/task3_success.html')
+
+def task4_error(request):
+    return render(request, 'tasks/task3_error.html')
+
+def task4(request): 
+    pass

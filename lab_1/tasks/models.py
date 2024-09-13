@@ -13,5 +13,11 @@ class Image(models.Model):
     height = models.IntegerField()
 
     def __str__(self):
-        return f"URL: {self.url}, Height: {self.height}, Width: {self.width}, Label: {self.label}"
+        return f"URL: {self.url}, Height: {self.height}"
 
+class Image2(models.Model):
+    url = models.URLField(max_length=200, unique=True),
+    height = models.IntegerField()
+    
+    def __str__(self):
+        return f"URL: {self.url}, Height: {self.height}"
