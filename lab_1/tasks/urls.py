@@ -15,4 +15,10 @@ urlpatterns = [
     path('task4/error/', views.task4_error, name='task4_error'),
     
     path('task5', views.task5, name='task5'),
+    
+    path('station1/', views.station1, name='station1'),
+    path('station2/', views.station2, name='station2'),
+    path('station3/', views.station3, name='station3'),
+    path('station4/', views.station4, name='station4'),
+    path('station5/', views.station5, name='station5'),
 ]

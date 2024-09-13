@@ -116,10 +116,8 @@ def task5(request):
         form = TableForm(request.POST)
         if form.is_valid():
             rows = form.cleaned_data['rows']
-            
             columns_dict = Columns.objects.first()
             columns = columns_dict.columns
-            
             current_images = Columns.objects.all()
             if current_images.count() > 2:
                 # Find the ID of the image to keep (most recent one)
@@ -133,8 +131,21 @@ def task5(request):
                 to_delete.delete()
                         
             table = [[(r * columns + c + 1) for c in range(columns)] for r in range(rows)]
-
     else:
         form = TableForm()
-
     return render(request, 'tasks/task5.html', {'form': form, 'table': table})
+
+def station1(request):
+    return render(request, 'tasks/station1.html')
+
+def station2(request):
+    return render(request, 'tasks/station2.html')
+
+def station3(request):
+    return render(request, 'tasks/station3.html')
+
+def station4(request):
+    return render(request, 'tasks/station4.html')
+
+def station5(request):
+    return render(request, 'tasks/station5.html')
